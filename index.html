@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Will You Be My Girlfriend?</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', cursive;
+      background: pink;
+      overflow: hidden;
+    }
+    .page {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+    .active {
+      display: flex;
+    }
+    h1 {
+      color: white;
+      font-size: 2em;
+    }
+    button {
+      padding: 1em;
+      margin: 1em;
+      font-size: 1em;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .yes {
+      background: #ff69b4;
+      color: white;
+    }
+    .no {
+      position: absolute;
+      background: #fff;
+      color: black;
+    }
+    .hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+    }
+    .heart {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      background: red;
+      transform: rotate(45deg);
+      animation: float 3s linear infinite;
+    }
+    .heart::before, .heart::after {
+      content: '';
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      background: red;
+      border-radius: 50%;
+    }
+    .heart::before {
+      top: -7.5px;
+      left: 0;
+    }
+    .heart::after {
+      top: 0;
+      left: -7.5px;
+    }
+    @keyframes float {
+      to {
+        transform: translateY(-100vh);
+        opacity: 0;
+      }
+    }
+    input, select {
+      margin: 1em;
+      padding: 0.5em;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="hearts"></div>
+
+  <div id="page1" class="page active">
+    <h1>Hey, would you like to spend a little time together this week? Just you, me 😊</h1>
+    <button class="yes" onclick="nextPage()">Yes I do</button>
+    <button class="no" id="noButton">No, leave me alone</button>
+  </div>
+
+  <div id="page2" class="page">
+    <h1>Plan our special time 💖</h1>
+    <input type="date" id="date" />
+    <input type="time" id="time" />
+    <select id="activity">
+      <option value="pizza">Pizza</option>
+      <option value="london">London</option>
+      <option value="movie">Movie</option>
+    </select>
+    <button class="yes" onclick="nextPage()">Continue</button>
+  </div>
+
+  <div id="page3" class="page">
+    <h1>Here’s our sweet little plan ❤️</h1>
+    <div id="summary"></div>
+  </div>
+
+  <script>
+    const pages = [
+      document.getElementById('page1'),
+      document.getElementById('page2'),
+      document.getElementById('page3')
+    ];
+    let currentPage = 0;
+
+    function nextPage() {
+      pages[currentPage].classList.remove('active');
+      currentPage++;
+      pages[currentPage].classList.add('active');
+
+      if (currentPage === 2) {
+        const date = document.getElementById('date').value;
+        const time = document.getElementById('time').value;
+        const activity = document.getElementById('activity').value;
+        document.getElementById('summary').innerHTML = `
+          <p>📅 Date: ${date}</p>
+          <p>⏰ Time: ${time}</p>
+          <p>🎉 Activity: ${activity}</p>
+        `;
+      }
+    }
+
+    // Button hover effect for "No, leave me alone"
+    const noBtn = document.getElementById('noButton');
+    noBtn.addEventListener('mouseover', () => {
+      const x = Math.random() * (window.innerWidth - 100);
+      const y = Math.random() * (window.innerHeight - 50);
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
+    });
+
+    // Hearts trail animation
+    document.addEventListener('mousemove', (e) => {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.style.left = `${e.pageX}px`;
+      heart.style.top = `${e.pageY}px`;
+      document.querySelector('.hearts').appendChild(heart);
+      setTimeout(() => heart.remove(), 3000);
+    });
+  </script>
+</body>
+</html>
+Commit new file
